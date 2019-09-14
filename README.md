@@ -23,7 +23,7 @@ Run the following command in the router's terminal:
 
 This will clone the glider-merlin repository to `/opt/share/glider-merlin` direcotry in the router and create a soft link to `/opt/share/glider-merlin/script/glider-merlin.sh` as `/opt/sbin/glider-merlin`.
 
-**NOTICE: Check if `/opt/share/glider-merlin/bin/glider` can be run successfully in the router terminal. If NOT, your SHOULD compile glider for the router by yourself and replace the original glider with it.**
+**NOTICE: Check if `/opt/share/glider-merlin/bin/glider` can be run successfully in the router terminal. If NOT, you SHOULD compile glider for the router by yourself and replace the original glider with it.**
 
 ### Configuartion
 
@@ -33,7 +33,9 @@ Nothing to change usually. Read the file for details.
 
 #### etc/glider/glider.conf
 
-Only `forward` setting MUST be provided. Read the file for details.
+Run `cp etc/glider/glider.sample.conf etc/glider/glider.conf` first.
+
+Only `forward` setting MUST be modified. Read the file for details.
 
 #### (optional) data/
 
