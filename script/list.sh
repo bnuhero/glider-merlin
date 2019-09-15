@@ -43,7 +43,8 @@ _post_processing(){
           _info "Done."
           ;;
     txt)
-          # 列表文件，无需处理
+          # Normal list file.
+	        # Nothing to do.
           ;;
     *)
           _warn "Unknown list file extension: $1"
@@ -75,12 +76,10 @@ _download_list(){
   fi
 }
 
-# well known domain|ip list
-GLIDER_SYSTEM_DNS_BLACKLIST="https://cokebar.github.io/gfwlist2dnsmasq/gfwlist_domain.txt"
-
-GLIDER_SYSTEM_DNS_WHITELIST="https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf"
-
-GLIDER_SYSTEM_IP_WHITELIST="https://raw.githubusercontent.com/17mon/china_ip_list/master/china_ip_list.txt"
+# # well known domain|ip list
+# GM_SYSTEM_DNS_BLACKLIST="https://cokebar.github.io/gfwlist2dnsmasq/gfwlist_domain.txt"
+# GM_SYSTEM_DNS_WHITELIST="https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf"
+# GM_SYSTEM_IP_WHITELIST="https://raw.githubusercontent.com/17mon/china_ip_list/master/china_ip_list.txt"
 
 # check if this is a system list.
 _is_sys_list(){
@@ -91,7 +90,7 @@ _is_sys_list(){
 
   case ".$_list_filename_ext" in
     $GM_DNS_BLACKLIST_EXT)
-                        for _url in $GLIDER_SYSTEM_DNS_BLACKLIST
+                        for _url in $GM_SYSTEM_DNS_BLACKLIST
                         do
                           _url_filename_noext=$(_get_filename_noext $_url)
                           if [ "$_list_filename_noext" = "$_url_filename_noext" ]; then
@@ -101,7 +100,7 @@ _is_sys_list(){
                         done
                         ;;
     $GM_DNS_WHITELIST_EXT)
-                        for _url in $GLIDER_SYSTEM_DNS_WHITELIST
+                        for _url in $GM_SYSTEM_DNS_WHITELIST
                         do
                           _url_filename_noext=$(_get_filename_noext $_url)
                           if [ "$_list_filename_noext" = "$_url_filename_noext" ]; then
@@ -111,7 +110,7 @@ _is_sys_list(){
                         done
                         ;;
     $GM_IP_WHITELIST_EXT)
-                        for _url in $GLIDER_SYSTEM_IP_WHITELIST
+                        for _url in $GM_SYSTEM_IP_WHITELIST
                         do
                           _url_filename_noext=$(_get_filename_noext $_url)
                           if [ "$_list_filename_noext" = "$_url_filename_noext" ]; then
@@ -132,17 +131,17 @@ _is_sys_list(){
 #   If ARGV1 set to 'forced', download all the latest files.
 #   If NOT, download the lists only if not existed.
 curl_system_list(){
-  for _url in $GLIDER_SYSTEM_DNS_BLACKLIST
+  for _url in $GM_SYSTEM_DNS_BLACKLIST
   do
     _download_list $_url $GM_HOME/data $GM_DNS_BLACKLIST_EXT $1
   done
                       
-  for _url in $GLIDER_SYSTEM_DNS_WHITELIST
+  for _url in $GM_SYSTEM_DNS_WHITELIST
   do
     _download_list $_url $GM_HOME/data $GM_DNS_WHITELIST_EXT $1
   done
  
-  for _url in $GLIDER_SYSTEM_IP_WHITELIST
+  for _url in $GM_SYSTEM_IP_WHITELIST
   do
     _download_list $_url $GM_HOME/data $GM_IP_WHITELIST_EXT $1
   done
