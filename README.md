@@ -21,9 +21,17 @@ Run the following command in the router's terminal:
 
 `curl -sSL https://raw.githubusercontent.com/bnuhero/glider-merlin/master/install.sh | sh`
 
-This will clone the glider-merlin repository to `/opt/share/glider-merlin` direcotry in the router and create a soft link to `/opt/share/glider-merlin/script/glider-merlin.sh` as `/opt/sbin/glider-merlin`.
+This will clone the glider-merlin repository to `$GM_HOME` ( default value is `/opt/share/glider-merlin`) direcotry in the router and create a soft link to `$GM_HOME/script/glider-merlin.sh` as `/opt/sbin/glider-merlin`.
 
-**NOTICE: Check if `/opt/share/glider-merlin/bin/glider` can be run successfully in the router terminal. If NOT, you SHOULD compile glider for the router by yourself and replace the original glider with it.**
+If you want to install glider-merlin to a different directory, e.g. `/opt/share/myglider`, run this:
+
+`curl -sSL https://raw.githubusercontent.com/bnuhero/glider-merlin/master/install.sh | GM_HOME=/opt/share/myglider sh`
+
+**Notice:** `/$GM_HOME/bin/glider` is built by the command:
+
+`env GOOS=linux GOARCH=arm GOARM=5 go get -u github.com/nadoo/glider`. 
+
+**Do check if `/$GM_HOME/bin/glider` can be run successfully in the router before you continue. If NOT, get or build the right version of glider for your router.**
 
 ### Configuartion
 
@@ -43,28 +51,30 @@ Add custom domain|IP blacklist|whitelist file here.
 
 #### etc/dnsmasq.d/
 
-Run `glider-merlin config` in the terminal. That's all.
+Run `glider-merlin config` to generate all the dnsmasq configurations.
 
 ### Usage
 
 `glider-merlin config|fullconfig|start|stop|restart|remove|uninstall|update`
 
-* `config` - 1) Download the well known domain|IP lists if NOT existed. 2) Generate the dnsmasq configration files using domain|IP whitelist|blacklist if NOT existed. 3) Create the corresponding ipsets.
+**Notice: If `GM_HOME` is set to a non-default directory, do run `glider-merlin` with the specified `GM_HOME` setting.**
+
+* `config` - 1) Download well known domain|IP lists if NOT existed. 2) Generate the dnsmasq configration files using domain|IP whitelist|blacklist if NOT existed. 3) Create the corresponding ipsets.
 * `fullconfig` - Do the above steps even if files existed.
 * `start` - start the transparent proxy service.
 * `stop` - stop the transparent proxy service.
 * `restart` - restart the transparent proxy service.
 * `remove` - stop the transparent proxy service and delete `glider-merlin` directory.
 * `uninstall` - same as `remove`
-* `update` - fetch the latest glider-merlin. **NOT IMPLEMENTED**
+* `update` - fetch the latest glider-merlin. **NOT IMPLEMENTED YET**
 
-### Credits
+## Credits
 
 Thank you for making the world better!
 
 * [shadowsocks-asuswrt-merlin](https://github.com/Acris/shadowsocks-asuswrt-merlin)
 
-### License
+## License
 
 The MIT License (MIT)
 
