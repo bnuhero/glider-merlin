@@ -66,7 +66,7 @@ fi
 # Glider Configuration
 # ----------------
 _bold "Parsing glider.conf ..."
-parse_glider_conf $1
+parse_glider_conf "$GM_HOME_ETC_GLIDER/glider.conf"
 _info "Done."
 
 # Main program
@@ -78,10 +78,10 @@ _usage(){
 # Upodate configurations: glider, domain/IP list, dnsmasq
 _gmc_config(){
   _bold "Downloading the well known domain/IP lists ..."
-  curl_system_list $2
+  curl_system_list $1
   _info "Done."
 
-  make_dns_conf $2
+  make_dns_conf $1
   
   create_ipset
 }
@@ -171,10 +171,10 @@ _gmc_remove(){
 
 case $1 in
   config)
-              _gmc_config "$GM_HOME_ETC_GLIDER/glider.conf"
+              _gmc_config
               ;;
   fullconfig)
-              _gmc_config "$GM_HOME_ETC_GLIDER/glider.conf" forced
+              _gmc_config forced
               ;;
   start)
               _gmc_start
