@@ -57,9 +57,22 @@ _parse_glider_dns(){
   fi
 }
 
+_is_port_used(){
+  netstat -pltun | grep ":$1\s"
+  if [ $? -eq 0 ]; then
+    echo yes
+  else
+    echo no
+  fi
+}
+
 _validate_glider_conf(){
   if [ "$GLIDER_REDIRECT_HOST" = "" ] || [ "$GLIDER_REDIRECT_PORT" = "" ]; then
     _error "NO transparent proxy defined in '$1'"
+    _info "Abort"
+    exit 1
+  elif [ "$(_is_port_used $GLIDER_REDIRECT_PORT)" = "yes" ]; then
+    _error "port '$GLIDER_REDIRECT_PORT' is used. Change the 'listen' setting in 'glider.conf' please."
     _info "Abort"
     exit 1
   else
@@ -68,6 +81,10 @@ _validate_glider_conf(){
 
   if [ "$GLIDER_DNS_HOST" = "" ] || [ "$GLIDER_DNS_PORT" = "" ]; then
     _error "NO dns server ('dns') defined in '$1'"
+    _info "Abort"
+    exit 1
+  elif [ "$(_is_port_used $GLIDER_DNS_PORT)" = "yes" ]; then
+    _error "port '$GLIDER_DNS_PORT' is used. Change the 'dns' setting in 'glider.conf' please."
     _info "Abort"
     exit 1
   else
