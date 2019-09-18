@@ -63,6 +63,12 @@ if [ "$GM_QUICK_DNS_SERVER" = "" ]; then
   GM_QUICK_DNS_SERVER=$(get_default_dns_server)
 fi
 
+# Glider Configuration
+# ----------------
+_bold "Parsing glider.conf ..."
+parse_glider_conf $1
+_info "Done."
+
 # Main program
 # ----------------
 _usage(){
@@ -71,10 +77,6 @@ _usage(){
 
 # Upodate configurations: glider, domain/IP list, dnsmasq
 _gmc_config(){
-  _bold "Parsing glider.conf ..."
-  parse_glider_conf $1
-  _info "Done."
-
   _bold "Downloading the well known domain/IP lists ..."
   curl_system_list $2
   _info "Done."
