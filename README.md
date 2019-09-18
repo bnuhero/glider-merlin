@@ -1,4 +1,4 @@
-# Glider-Merlin: Setup a transparent proxy for [asuswrt-merlin.ng](https://github.com/RMerl/asuswrt-merlin.ng) routers with [glider](https://github.com/nadoo/glider)
+# Glider-Merlin: Setup a transparent proxy for [asuswrt-merlin.ng](https://www.asuswrt-merlin.net/) routers with [glider](https://github.com/nadoo/glider)
 
 Glider-merlin will install glider to the asuswrt-merlin.ng router and setup a transparent ptoxy. Tested on a RT-AC66U_B1 router with the asuswrt-merlin 384.13 firmware.
 
@@ -6,7 +6,7 @@ Glider-merlin will install glider to the asuswrt-merlin.ng router and setup a tr
 
 ### Prerequisites
 
-* The latest Asuswrt-Merlin New Gen firmware installed.
+* The latest [Asuswrt-Merlin New Gen](https://www.asuswrt-merlin.net/) firmware installed.
 * [SSH](https://github.com/RMerl/asuswrt-merlin/wiki/SSHD) enabled.
 * [JFFS](https://github.com/RMerl/asuswrt-merlin/wiki/JFFS) partion enabled.
 * [Entware](https://github.com/RMerl/asuswrt-merlin/wiki/Entware) installed.
@@ -31,7 +31,7 @@ If you want to install glider-merlin to a different directory, e.g. `/opt/share/
 
 `env GOOS=linux GOARCH=arm GOARM=5 go get -u github.com/nadoo/glider`. 
 
-**Do check if `/$GM_HOME/bin/glider` can be run successfully in the router before you continue. If NOT, get or build the right version of glider for your router.**
+**Do check if `/$GM_HOME/bin/glider` can be run successfully in the router before you continue. If NOT, get or build the right version of [glider](https://github.com/nadoo/glider/releases) for your router.**
 
 ### Configuartion
 
