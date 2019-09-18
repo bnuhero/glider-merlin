@@ -137,6 +137,56 @@ clone_gm_repo(){
   }  
 }
 
+_enable_auto_glider(){
+  _services_start=/jffs/scripts/services-start
+  _services_stop=/jffs/scripts/services-stop
+
+  #_start_glider_service="nohup $GM_HOME_BIN/glider -config $GM_HOME_ETC_GLIDER/glider.conf >/dev/null 2>&1 &"
+  _start_glider_service="glider-merlin start"
+  _stop_glider_service="glider-merlin stop"
+
+  if [ -d "/jffs/scripts" ]; then
+
+    # auto-start
+    touch $_services_start
+    unset _found
+
+    while read -r _line
+    do
+      if [ "$_line" = "$_start_glider_service" ]; then
+        _found=true
+        break
+      fi
+    done < $_services_start
+
+    if [ "$_found" != "true" ]; then
+      echo $_start_glider_service >> $_services_start
+    fi
+
+    chmod 755 $_services_start
+
+    # auto-stop
+    touch $_services_stop
+    unset _found
+
+    while read -r _line
+    do
+      if [ "$_line" = "$_stop_glider_service" ]; then
+        _found=true
+        break
+      fi
+    done < $_services_stop
+
+    if [ "$_found" != "true" ]; then
+      echo $_stop_glider_service >> $_services_stop
+    fi
+
+    chmod 755 $_services_stop
+  else
+    _error "Can't enbale auto-start glider service on boot for no '/jffs/scripts' directory!"
+  fi
+}
+
 # Main
 # ----
 
@@ -173,10 +223,7 @@ if [ ! -f "$_gm_shell" ]; then
 fi
 ln -s $_gm_shell $_gm
 
-# Initalization
-#   1) Download the well known IP|DNS list if NOT existed.
-#   2) Generate the dnsmasq configration files using IP|DNS whitelist|blacklist if NOT existed.
-#   3) Create the corresponding ipsets.
-# glider-merlin config
+# enable auto-start/stop glider-merlin service on boot
+_enable_auto_glider
 
 _bold "glider-merlin installed in '$GM_HOME' successfully!"

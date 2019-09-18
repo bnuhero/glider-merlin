@@ -85,12 +85,25 @@ _gmc_config(){
   
   create_ipset
 }
-_enable_autostart_glider(){
-  _service_start=/jffs/scripts/service-start
-  _start_glider_service="nohup $GM_HOME_BIN/glider -config $GM_HOME_ETC_GLIDER/glider.conf >/dev/null 2>&1 &"
+
+# auto start/stop glider-merlin service on boot
+# ====
+# 1) /jffs/scripts/services-start: glider-merlin start
+# 2) /jffs/scripts/services-stop: glider-merlin stop
+# 3) glider-merlin install: add `glider-merlin start/stop` in `services-start|stop`
+# 4) glider-merlin remove: remove `glider-merlin start/stop` in `services-start|stop`
+
+_enable_auto_glider(){
+  _services_start=/jffs/scripts/services-start
+  _services_stop=/jffs/scripts/services-stop
+
+  _start_glider_service="glider-merlin start"
+  _stop_glider_service="glider-merlin stop"
 
   if [ -d "/jffs/scripts" ]; then
-    touch $_service_start
+
+    # auto-start
+    touch $_services_start
     unset _found
 
     while read -r _line
@@ -99,31 +112,63 @@ _enable_autostart_glider(){
         _found=true
         break
       fi
-    done < $_service_start
+    done < $_services_start
 
     if [ "$_found" != "true" ]; then
-      echo $_start_glider_service >> $_service_start
+      echo $_start_glider_service >> $_services_start
     fi
 
-    chmod 755 $_service_start
+    chmod 755 $_services_start
+
+    # auto-stop
+    touch $_services_stop
+    unset _found
+
+    while read -r _line
+    do
+      if [ "$_line" = "$_stop_glider_service" ]; then
+        _found=true
+        break
+      fi
+    done < $_services_stop
+
+    if [ "$_found" != "true" ]; then
+      echo $_stop_glider_service >> $_services_stop
+    fi
+
+    chmod 755 $_services_stop
   else
     _error "Can't enbale auto-start glider service on boot for no '/jffs/scripts' directory!"
   fi
 }
 
-_disable_autostart_glider(){
-  _service_start=/jffs/scripts/service-start
-  _start_glider_service="nohup $GM_HOME_BIN/glider -config $GM_HOME_ETC_GLIDER/glider.conf >/dev/null 2>&1 &"
+_disable_auto_glider(){
+  _services_start=/jffs/scripts/services-start
+  _services_stop=/jffs/scripts/services-stop
 
-  if [ -f "$_service_start" ]; then
+  _start_glider_service="glider-merlin start"
+  _stop_glider_service="glider-merlin stop"
+
+  if [ -f "$_services_start" ]; then
     while read -r _line
     do
       if [ "$_line" != "$_start_glider_service" ]; then
         echo $_line
       fi
-    done < $_service_start >> $_service_start.bak
+    done < $_services_start >> $_services_start.bak
 
-    mv $_service_start.bak $_service_start
+    mv $_services_start.bak $_services_start
+  fi
+
+  if [ -f "$_services_stop" ]; then
+    while read -r _line
+    do
+      if [ "$_line" != "$_stop_glider_service" ]; then
+        echo $_line
+      fi
+    done < $_services_stop >> $_services_stop.bak
+
+    mv $_services_stop.bak $_services_stop
   fi
 }
 
@@ -147,9 +192,6 @@ _gmc_start(){
   apply_dns_conf
   
   service restart_dnsmasq
-
-  # Enable auto-start glider service on boot
-  _enable_autostart_glider
 }
 
 _gmc_stop(){
@@ -158,9 +200,6 @@ _gmc_stop(){
 
   service restart_dnsmasq
   killall glider
-
-  # disable auto-start glider service on boot
-  _disable_autostart_glider
 }
 
 _gmc_remove(){
@@ -168,6 +207,8 @@ _gmc_remove(){
 
   destroy_ipset
   rm /opt/sbin/glider-merlin
+
+  _disable_auto_glider
 }
 
 
