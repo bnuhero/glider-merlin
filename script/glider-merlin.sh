@@ -104,6 +104,8 @@ _enable_autostart_glider(){
     if [ "$_found" != "true" ]; then
       echo $_start_glider_service >> $_service_start
     fi
+
+    chmod 755 $_service_start
   else
     _error "Can't enbale auto-start glider service on boot for no '/jffs/scripts' directory!"
   fi
