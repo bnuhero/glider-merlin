@@ -73,6 +73,9 @@ Run `glider-merlin config` to generate all the dnsmasq configurations.
 Thank you for making the world better!
 
 * [shadowsocks-asuswrt-merlin](https://github.com/Acris/shadowsocks-asuswrt-merlin)
+* [glider](https://github.com/nadoo/glider)
+* [shadowsocks-libev](https://github.com/shadowsocks/shadowsocks-libev)
+* [v2ray](https://github.com/v2ray/v2ray-core)
 
 ## License
 
