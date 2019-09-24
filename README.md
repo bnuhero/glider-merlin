@@ -29,7 +29,7 @@ If you want to install glider-merlin to a different directory, e.g. `/opt/share/
 
 **Notice:** `/$GM_HOME/bin/glider` is built by the command:
 
-`env GOOS=linux GOARCH=arm GOARM=5 go get -u github.com/nadoo/glider`. 
+`env GOOS=linux GOARCH=arm GOARM=5 go build`
 
 **Do check if `/$GM_HOME/bin/glider` can be run successfully in the router before you continue. If NOT, get or build the right version of [glider](https://github.com/nadoo/glider/releases) for your router.**
 
