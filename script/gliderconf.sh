@@ -75,24 +75,12 @@ _validate_glider_conf(){
     _info "Transparent proxy: $GLIDER_REDIRECT_HOST:$GLIDER_REDIRECT_PORT"
   fi
 
-  if [ "$(_is_port_used $GLIDER_REDIRECT_PORT)" = "yes" ]; then
-    _error "port '$GLIDER_REDIRECT_PORT' is used. Change the 'listen' setting in 'glider.conf' please."
-    _info "Abort"
-    exit 1
-  fi
-
   if [ "$GLIDER_DNS_HOST" = "" ] || [ "$GLIDER_DNS_PORT" = "" ]; then
     _error "NO dns server ('dns') defined in '$1'"
     _info "Abort"
     exit 1
   else
     _info "DNS Server: $GLIDER_DNS_HOST:$GLIDER_DNS_PORT"
-  fi
-
-  if [ "$(_is_port_used $GLIDER_DNS_PORT)" = "yes" ]; then
-    _error "port '$GLIDER_DNS_PORT' is used. Change the 'dns' setting in 'glider.conf' please."
-    _info "Abort"
-    exit 1
   fi
 
   if [ "$GLIDER_DNSSERVER_LIST" = "" ]; then

@@ -184,6 +184,18 @@ _gmc_start(){
   fi
   chmod 755 $GM_HOME_BIN/glider
 
+  if [ "$(_is_port_used $GLIDER_REDIRECT_PORT)" = "yes" ]; then
+    _error "port '$GLIDER_REDIRECT_PORT' is used. Change the 'listen' setting in 'glider.conf' please."
+    _info "Abort"
+    exit 1
+  fi
+
+  if [ "$(_is_port_used $GLIDER_DNS_PORT)" = "yes" ]; then
+    _error "port '$GLIDER_DNS_PORT' is used. Change the 'dns' setting in 'glider.conf' please."
+    _info "Abort"
+    exit 1
+  fi
+
   # start glider service
   killall glider
   nohup $GM_HOME_BIN/glider -config $GM_HOME_ETC_GLIDER/glider.conf >/dev/null 2>&1 &
