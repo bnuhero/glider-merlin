@@ -83,6 +83,7 @@ _gmc_config(){
 
   make_dns_conf $1
   
+  destroy_ipset
   create_ipset
 }
 
