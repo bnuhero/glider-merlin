@@ -42,6 +42,8 @@ _make_dns_conf_by_blacklist(){
   do
     _conf_file_name=$(basename $_list_file $GM_DNS_BLACKLIST_EXT)
     _conf_file=$GM_HOME_ETC_DNSMASQ/$_conf_file_name.conf.black
+
+    GLIDER_IPSET_NAME_LIST=$(_join $GLIDER_IPSET_NAME_LIST " " "gmb-$_conf_file_name")
         
     if [ "$1" != "forced" ] && [ "$(_is_sys_list $(basename $_list_file))" = "yes" ] && [ -f "$_conf_file" ]; then
       _warn "Conf file existed: $_conf_file."
@@ -64,6 +66,8 @@ _make_dns_conf_by_whitelist(){
   do
     _conf_file_name=$(basename $_list_file $GM_DNS_WHITELIST_EXT)
     _conf_file=$GM_HOME_ETC_DNSMASQ/$_conf_file_name.conf.white
+
+    GLIDER_IPSET_NAME_LIST=$(_join $GLIDER_IPSET_NAME_LIST " " "gmw-$_conf_file_name")
 
     if [ "$1" != "forced" ] && [ "$(_is_sys_list $(basename $_list_file))" = "yes" ] && [ -f "$_conf_file" ]; then
       _warn "Conf file existed: $_conf_file."
