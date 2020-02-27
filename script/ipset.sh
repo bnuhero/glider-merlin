@@ -19,13 +19,12 @@ _create_ipset_by_blacklist(){
   # create a ipset for every domain blacklist
   #   name: start with 'gmb-'
   #   type: hash:ip
-  for _ipset_name in $GLIDER_IPSET_NAME_LIST
+  for _list_file in $(_ls_files $GM_HOME_DATA "*$GM_DNS_BLACKLIST_EXT")
   do
-    echo $_ipset_name | grep -q "^gmb-.*$"
-    if [ $? -eq 0 ]; then
-      ipset -! create $_ipset_name hash:ip
-      _bold "IPSET $_ipset_name hash:ip created."
-    fi
+    _conf_file_name=$(basename $_list_file $GM_DNS_BLACKLIST_EXT)
+    _ipset_name=gmb-$_conf_file_name
+    ipset -! create $_ipset_name hash:ip
+    _bold "IPSET $_ipset_name hash:ip created."
   done
 
   # create a ipset for every ip blacklist
@@ -57,13 +56,12 @@ _create_ipset_by_whitelist(){
   # create a ipset for every domain whitelist
   #   name: start with 'gmw-'
   #   type: hash:ip
-  for _ipset_name in $GLIDER_IPSET_NAME_LIST
+  for _list_file in $(_ls_files $GM_HOME_DATA "*$GM_DNS_WHITELIST_EXT")
   do
-    echo $_ipset_name | grep -q "^gmw-.*$"
-    if [ $? -eq 0 ]; then
-      ipset -! create $_ipset_name hash:ip
-      _bold "IPSET $_ipset_name hash:ip created."
-    fi
+    _conf_file_name=$(basename $_list_file $GM_DNS_WHITELIST_EXT)
+    _ipset_name=gmw-$_conf_file_name
+    ipset -! create $_ipset_name hash:ip
+    _bold "IPSET $_ipset_name hash:ip created."
   done
 
   # Create a ipset for every IP whitelist
