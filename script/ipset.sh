@@ -19,7 +19,7 @@ _create_ipset_by_blacklist(){
   # create a ipset for every domain blacklist
   #   name: start with 'gmb-'
   #   type: hash:ip
-  for _ipset_name in $GLIDER_IPSET_NAME_LIST
+  for _ipset_name in $(ipset list -n)
   do
     echo $_ipset_name | grep -q "^gmb-.*$"
     if [ $? -eq 0 ]; then
@@ -54,9 +54,17 @@ _create_ipset_by_blacklist(){
   done
 }
 _create_ipset_by_whitelist(){
-  # Domain whitelist
-  #   Nothing to do for now.
-  #   Because usually the corresponding IP addresses already included in IP whitelist.
+  # create a ipset for every domain whitelist
+  #   name: start with 'gmw-'
+  #   type: hash:ip
+  for _ipset_name in $(ipset list -n)
+  do
+    echo $_ipset_name | grep -q "^gmw-.*$"
+    if [ $? -eq 0 ]; then
+      ipset -! create $_ipset_name hash:ip
+      _bold "IPSET $_ipset_name hash:ip created."
+    fi
+  done
 
   # Create a ipset for every IP whitelist
   #   name: start with 'gmw-'

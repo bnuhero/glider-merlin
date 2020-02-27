@@ -42,8 +42,6 @@ _make_dns_conf_by_blacklist(){
   do
     _conf_file_name=$(basename $_list_file $GM_DNS_BLACKLIST_EXT)
     _conf_file=$GM_HOME_ETC_DNSMASQ/$_conf_file_name.conf.black
-
-    GLIDER_IPSET_NAME_LIST=$(_join $GLIDER_IPSET_NAME_LIST " " "gmb-$_conf_file_name")
         
     if [ "$1" != "forced" ] && [ "$(_is_sys_list $(basename $_list_file))" = "yes" ] && [ -f "$_conf_file" ]; then
       _warn "Conf file existed: $_conf_file."
@@ -77,6 +75,7 @@ _make_dns_conf_by_whitelist(){
     do
       if [ -n "_domain" ]; then
         echo "server=/$_domain/$GM_QUICK_DNS_SERVER"
+        echo "ipset=/$_domain/gmw-$_conf_file_name" # IPs will be added to 'gmw-$_conf_file_name' by dnsmasq service.
       fi
     done < $_list_file >> $_conf_file
     _info "$_conf_file created."
