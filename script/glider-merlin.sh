@@ -198,8 +198,8 @@ _gmc_start(){
   fi
 
   # start trojan and glider service
-  killall trojan >/dev/null 2>&1
-  nohup /opt/bin/trojan -c /opt/etc/trojan/config.json >/dev/null 2>&1 &
+  #killall trojan >/dev/null 2>&1
+  #nohup /opt/bin/trojan -c /opt/etc/trojan/config.json >/dev/null 2>&1 &
 
   killall glider >/dev/null 2>&1
   nohup $GM_HOME_BIN/glider -config $GM_HOME_ETC_GLIDER/glider.conf >/dev/null 2>&1 &
@@ -216,7 +216,7 @@ _gmc_stop(){
 
   service restart_dnsmasq
   killall glider
-  killall trojan
+  #killall trojan
 }
 
 _gmc_remove(){
